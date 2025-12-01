@@ -20,7 +20,7 @@ const PageTest = () => {
 
 
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
-  const LIMIT = 6;
+  const LIMIT = 9;
 
 
   // Lấy danh sách events
@@ -95,130 +95,135 @@ const PageTest = () => {
     }
   };
 
-  return (
-    <div className="landpage-container">
-      {/* No need to include the Navbar here, it is globally imported in App.js */}
-      <Navbar />
-      {/* Hero Section */}
-      <section className="hero-section">
-        <div className="hero-content">
-          <h1>Where your eventure starts!</h1>
-          <p>Search and join the events you like</p>
+return (
+  <div className="landpage-container">
+    <Navbar />
 
-          {/* Search Bar */}
-          <form className="search-form" onSubmit={handleSearch}>
-            <input
-              type="text"
-              placeholder="Event's name, location, ... or any keyword"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="search-input"
-            />
-            <button type="submit" className="search-btn">
-              Search
-            </button>
-          </form>
+    {/* Hero Section */}
+    <section className="hero-section">
+      <div className="hero-content">
+        <h1>Where your eventure starts!</h1>
+        <p>Search and join the events you like</p>
+
+        {/* Search Bar */}
+        <form className="search-form" onSubmit={handleSearch}>
+          <input
+            type="text"
+            placeholder="Event's name, location, ... or any keyword"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="search-input"
+          />
+          <button type="submit" className="search-btn">
+            Search
+          </button>
+        </form>
+      </div>
+    </section>
+
+    {/* Trending Events Section */}
+    {page === 1 && !search && trendingEvents.length > 0 && (
+      <section className="trending-section">
+        <div className="container">
+          <h2 className="section-title">🔥 Sự Kiện Nổi Bật</h2>
+          <div className="events-grid trending-grid">
+            {trendingEvents.map((event) => (
+              <EventCardTest key={event._id} event={event} />
+            ))}
+          </div>
         </div>
       </section>
+    )}
 
-      {/* Trending Events Section*/}
-      {!search && trendingEvents.length > 0 && (
-        <section className="trending-section">
-          <div className="container">
-            <h2 className="section-title">🔥 Sự Kiện Nổi Bật</h2>
-            <div className="events-grid trending-grid">
-              {trendingEvents.map((event) => (
-                <EventCardTest key={event._id} event={event} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Main Events Section */}
-      <section className="events-section">
-        <div className="container">
-          {/* Filter Section */}
-            <div className="filters">
-            <label htmlFor="category" className="category-label">Explore categories</label>
+    {/* Main Events Section */}
+    <section className="events-section">
+      <div className="container">
+        {page === 1 && (
+          <div className="filters">
+            <label htmlFor="category" className="category-label">
+              Explore categories
+            </label>
             <div className="category-options">
               <div
-                className={`category-option ${category === 'volunteer' ? 'active' : ''}`}
-                onClick={() => handleCategoryChange('volunteer')}
+                className={`category-option ${category === "volunteer" ? "active" : ""}`}
+                onClick={() => handleCategoryChange("volunteer")}
               >
                 <img src="src/assets/Category_Volunteer.png" alt="Volunteer" />
                 <span className="category-name">Volunteer</span>
               </div>
 
               <div
-                className={`category-option ${category === 'academic' ? 'active' : ''}`}
-                onClick={() => handleCategoryChange('academic')}
+                className={`category-option ${category === "academic" ? "active" : ""}`}
+                onClick={() => handleCategoryChange("academic")}
               >
                 <img src="src/assets/Category_Academic.png" alt="Academic" />
                 <span className="category-name">Academic</span>
               </div>
+
               <div
-                className={`category-option ${category === 'entertainment' ? 'active' : ''}`}
-                onClick={() => handleCategoryChange('entertainment')}
+                className={`category-option ${category === "entertainment" ? "active" : ""}`}
+                onClick={() => handleCategoryChange("entertainment")}
               >
                 <img src="src/assets/Category_Entertainment.png" alt="Entertainment" />
                 <span className="category-name">Entertainment</span>
               </div>
+
               <div
-                className={`category-option ${category === 'conduct' ? 'active' : ''}`}
-                onClick={() => handleCategoryChange('conduct')}
+                className={`category-option ${category === "conduct" ? "active" : ""}`}
+                onClick={() => handleCategoryChange("conduct")}
               >
                 <img src="src/assets/Category_Conduct Score.png" alt="Conduct score" />
                 <span className="category-name">Conduct score</span>
               </div>
             </div>
           </div>
+        )}
 
-          {/* Events Grid */}
-          {loading ? (
-            <div className="loading">Đang tải sự kiện...</div>
-          ) : events.length > 0 ? (
-            <>
-              <div className="events-grid">
-                {events.map((event) => (
-                  <EventCardTest key={event._id} event={event} />
-                ))}
-              </div>
-
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="pagination">
-                  <button
-                    onClick={handlePrevPage}
-                    disabled={page === 1}
-                    className="pagination-btn"
-                  >
-                    ← Trước
-                  </button>
-
-                  <div className="page-info">
-                    Trang {page} / {totalPages}
-                  </div>
-
-                  <button
-                    onClick={handleNextPage}
-                    disabled={page === totalPages}
-                    className="pagination-btn"
-                  >
-                    Sau →
-                  </button>
-                </div>
-              )}
-            </>
-          ) : (
-            <div className="no-events">
-              <p>Không tìm thấy sự kiện nào</p>
+        {/* Events Grid */}
+        {loading ? (
+          <div className="loading">Đang tải sự kiện...</div>
+        ) : events.length > 0 ? (
+          <>
+            <div className="events-grid">
+              {events.map((event) => (
+                <EventCardTest key={event._id} event={event} />
+              ))}
             </div>
-          )}
-        </div>
-      </section>
-    </div>
-  );
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="pagination">
+                <button
+                  onClick={handlePrevPage}
+                  disabled={page === 1}
+                  className="pagination-btn"
+                >
+                  ← Trước
+                </button>
+
+                <div className="page-info">
+                  Trang {page} / {totalPages}
+                </div>
+
+                <button
+                  onClick={handleNextPage}
+                  disabled={page === totalPages}
+                  className="pagination-btn"
+                >
+                  Sau →
+                </button>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="no-events">
+            <p>Không tìm thấy sự kiện nào</p>
+          </div>
+        )}
+      </div>
+    </section>
+  </div>
+);
 };
 
 export default PageTest;
